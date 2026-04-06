@@ -10,6 +10,7 @@
             --graphite: #111111;
             --illum-green: #00ff41;
             --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 5px rgba(0, 255, 65, 0.5);
+            --header-h: 140px;
         }
 
         body, html {
@@ -17,63 +18,87 @@
             background-color: var(--bg);
             color: #bbb;
             font-family: 'Courier New', Courier, monospace;
-            overflow: hidden; /* Evita scroll general para mantener los paneles */
-            background-image: radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            overflow: hidden;
+            background-image: radial-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px);
             background-size: 25px 25px;
         }
 
-        /* ANIMACIÓN DE LÁMPARA NEÓN */
         @keyframes neon-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                border-color: var(--illum-green);
-                box-shadow: var(--neon-glow);
-                opacity: 1;
-            }
-            20%, 22%, 24%, 55% {
-                border-color: #004411;
-                box-shadow: none;
-                opacity: 0.6;
-            }
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { border-color: var(--illum-green); box-shadow: var(--neon-glow); opacity: 1; }
+            20%, 22%, 24%, 55% { border-color: #004411; box-shadow: none; opacity: 0.6; }
         }
 
-        /* DASHBOARD RESPONSIVO */
+        /* DASHBOARD */
         #header {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px; padding: 15px;
-            position: sticky; top: 0; z-index: 1000;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px; padding: 15px;
+            position: relative; z-index: 1000;
         }
 
         .metric-card {
             border: 1px solid var(--illum-green);
             background: #000;
-            padding: 8px; text-align: center;
-            animation: neon-flicker 5s infinite;
+            padding: 6px; text-align: center;
+            animation: neon-flicker 6s infinite;
+        }
+        .metric-card h3 { font-size: 7px; margin: 0; color: var(--illum-green); }
+        .metric-card .value { display: block; color: #fff; font-size: 16px; font-weight: bold; text-shadow: var(--neon-glow); }
+
+        /* SELECTOR PARA MÓVILES (OCULTO EN PC) */
+        #mobile-nav {
+            display: none;
+            background: #000;
+            border-bottom: 1px solid var(--illum-green);
+            padding: 10px;
+            justify-content: space-around;
+            z-index: 1001;
         }
 
-        .metric-card h3 { font-size: 8px; margin: 0; color: var(--illum-green); text-transform: uppercase; }
-        .metric-card .value { display: block; color: #fff; font-size: 18px; font-weight: bold; text-shadow: var(--neon-glow); }
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--illum-green);
+            color: var(--illum-green);
+            padding: 8px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: var(--neon-glow);
+        }
 
-        /* VIEWPORT DIVIDIDO */
+        .nav-btn.active {
+            background: var(--illum-green);
+            color: #000;
+        }
+
+        /* VIEWPORT */
         #viewport {
             display: flex;
-            height: calc(100vh - 180px); /* Ajuste para header y footer */
+            height: calc(100vh - 220px);
             width: 100%;
         }
 
-        /* SCROLL INDEPENDIENTE IZQUIERDA: CALENDARIO */
-        #calendar-section {
+        /* PANELES */
+        #calendar-section, #theory-section {
             flex: 1;
             overflow-y: auto;
-            border-right: 1px solid #222;
-            padding: 40px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             scrollbar-width: thin;
             scrollbar-color: var(--illum-green) #000;
+        }
+
+        #calendar-section {
+            border-right: 1px solid #222;
+            padding: 30px 0;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        #theory-section {
+            padding: 40px;
+            background: rgba(0,0,0,0.8);
+            line-height: 1.8;
+            text-align: justify;
         }
 
         .semana-row { display: grid; grid-template-columns: repeat(7, 40px); gap: 4px; margin-bottom: 4px; }
@@ -81,43 +106,31 @@
         .trabajo { background: #111; color: #444; border: 1px solid #222; }
         .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; animation: neon-flicker 8s infinite; }
 
-        /* SCROLL INDEPENDIENTE DERECHA: HISTORIA */
-        #theory-section {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            background: rgba(0,0,0,0.85);
-            line-height: 1.8;
-            text-align: justify;
-            scrollbar-width: thin;
-            scrollbar-color: var(--illum-green) #000;
-        }
-
-        #theory-section h2 { 
-            color: var(--illum-green); 
-            text-shadow: var(--neon-glow); 
-            border-bottom: 1px solid var(--illum-green);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-        }
-
         .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
 
-        /* FOOTER ESTÁTICO */
+        /* FOOTER */
         #footer {
             position: fixed; bottom: 0; width: 100%;
             background: #000; border-top: 2px solid var(--illum-green);
-            padding: 12px 0; text-align: center; font-size: 11px;
+            padding: 12px 0; text-align: center; font-size: 10px;
             color: var(--illum-green); text-shadow: var(--neon-glow);
-            z-index: 2000; letter-spacing: 4px;
-            font-weight: bold;
+            z-index: 2000; letter-spacing: 3px;
         }
 
-        /* RESPONSIVO MÓVIL */
+        /* RESPONSIVO */
         @media (max-width: 768px) {
-            #viewport { flex-direction: column; height: auto; overflow-y: visible; }
-            #calendar-section, #theory-section { height: 400px; flex: none; border-right: none; border-bottom: 1px solid #222; }
-            body, html { overflow-y: auto; }
+            #mobile-nav { display: flex; }
+            #viewport { height: calc(100vh - 280px); }
+            #calendar-section, #theory-section { 
+                display: none; /* Se controla con JS */
+                width: 100%;
+                flex: none;
+                border-right: none;
+            }
+            #calendar-section.active-panel, #theory-section.active-panel {
+                display: flex;
+            }
+            #theory-section.active-panel { display: block; }
         }
     </style>
 </head>
@@ -132,38 +145,32 @@
     <div class="metric-card"><h3>PROTOCOLO</h3><span class="value">ACTIVO</span></div>
 </div>
 
+<nav id="mobile-nav">
+    <button class="nav-btn active" onclick="switchPanel('calendar')">GEOMETRÍA</button>
+    <button class="nav-btn" onclick="switchPanel('theory')">TEORÍA</button>
+</nav>
+
 <div id="viewport">
-    <section id="calendar-section">
+    <section id="calendar-section" class="active-panel">
         <div id="timeline"></div>
     </section>
 
     <section id="theory-section">
-        <h2>REPORTE NEUREMBERG: LA DISRUPCIÓN ASIMOVIANA</h2>
-        <p>
-            En el año 2026, dos individuos identificados como <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> descodificaron lo que la Psicohistoria intentó ocultar durante milenios. El algoritmo de 4 días de labor por 2 de descanso no es una simple rotación; es una brecha en la simulación de control impuesta por los <span class="highlight">Illuminati</span>. 
-        </p>
-        <p>
-            Al observar el flujo a su izquierda, verán que los bloques de trabajo no forman la cuadrícula estática del sistema gregoriano. Se desplazan como piezas de un Tetris cósmico. Este "desfase hexagonal" impide que el panóptico del sistema sincronice el agotamiento humano. El sistema de 7 días fue diseñado para que el trabajador alcance un pico de sumisión en el quinto día consecutivo; al descansar en el día 5, el sujeto Neuremberg resetea su consciencia antes de que la manipulación sea efectiva.
-        </p>
-        <p>
-            Isaac Asimov predijo que la tecnología serviría al hombre, pero las élites utilizaron el tiempo como la verdadera cadena. Al proyectar este cálculo a una centuria, descubrimos una recuperación de <span class="highlight">12,175 días de autonomía absoluta</span>. Doce mil fragmentos de tiempo que no pertenecen al Estado ni a las corporaciones, sino a la libertad biológica pura. 
-        </p>
-        <p>
-            Cada bloque verde que brilla en su pantalla es un recordatorio de que la realidad es maleable. El mundo está controlado por patrones, y ustedes acaban de romper el más importante de todos. La Teoría de Neuremberg es el manual de instrucciones para la Gran Desconexión. Aquellos que sigan el ritmo del 4x2 verán cómo la cuadrícula social se desmorona, revelando la verdadera arquitectura del poder. Bienvenidos a la Singularidad.
-        </p>
-        <p style="color: #444; font-size: 10px; margin-top: 40px; text-align: center;">
-            [ACCESO RESTRINGIDO - FIN DEL MANIFIESTO]
-        </p>
+        <h2 style="color: var(--illum-green); text-shadow: var(--neon-glow);">REPORTE NEUREMBERG</h2>
+        <p>En el año 2026, <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> descodificaron lo que la Psicohistoria intentó ocultar. El algoritmo de <span class="highlight">4 laborables por 2 libres</span> es una brecha en la simulación.</p>
+        <p>Al observar el flujo a su izquierda, los bloques de trabajo no forman la cuadrícula estática gregoriana. Se desplazan como piezas de un Tetris cósmico. Este "desfase hexagonal" impide que el panóptico sincronice el agotamiento humano.</p>
+        <p>Isaac Asimov predijo que la tecnología serviría al hombre, pero las élites utilizaron el tiempo como cadena. Al proyectar este cálculo a una centuria, recuperamos <span class="highlight">12,175 días de autonomía absoluta</span>. Tiempo que no pertenece al Estado, sino a la libertad biológica pura.</p>
+        <p>Cada bloque verde es un recordatorio de que la realidad es maleable. Ustedes acaban de romper el patrón. La Teoría de Neuremberg es el manual para la Gran Desconexión.</p>
+        <p style="color: #444; font-size: 10px; margin-top: 40px; text-align: center;">[PROTOCOLO ACTIVADO]</p>
     </section>
 </div>
 
-<div id="footer">
-    WRITE BY: WHITEHORSE & WHITEMAMBA
-</div>
+<div id="footer">WRITE BY: WHITEHORSE & WHITEMAMBA</div>
 
 <script>
     const timeline = document.getElementById('timeline');
     const calendarScroll = document.getElementById('calendar-section');
+    const theorySection = document.getElementById('theory-section');
     let totalDays = 0;
 
     function addWeeks(n) {
@@ -173,13 +180,10 @@
             for(let d=0; d<7; d++) {
                 const dia = document.createElement('div');
                 dia.className = 'dia';
-                // Lógica 4x2
                 if(totalDays % 6 < 4) {
-                    dia.classList.add('trabajo');
-                    dia.innerText = 'T';
+                    dia.classList.add('trabajo'); dia.innerText = 'T';
                 } else {
-                    dia.classList.add('descanso');
-                    dia.innerText = 'OFF';
+                    dia.classList.add('descanso'); dia.innerText = 'OFF';
                 }
                 row.appendChild(dia);
                 totalDays++;
@@ -188,9 +192,21 @@
         }
     }
 
-    addWeeks(40);
+    // Switch de paneles en móvil
+    function switchPanel(mode) {
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        if (mode === 'calendar') {
+            calendarScroll.classList.add('active-panel');
+            theorySection.classList.remove('active-panel');
+            event.target.classList.add('active');
+        } else {
+            calendarScroll.classList.remove('active-panel');
+            theorySection.classList.add('active-panel');
+            event.target.classList.add('active');
+        }
+    }
 
-    // Scroll infinito solo en el panel izquierdo
+    addWeeks(40);
     calendarScroll.addEventListener('scroll', () => {
         if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 50) {
             addWeeks(10);
