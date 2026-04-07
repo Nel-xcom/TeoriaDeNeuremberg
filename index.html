@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEUREMBERG: GALOIS FIELD THEORY (4x2)</title>
+    <title>NEUREMBERG: THE GALOIS EXTENSION (4x2)</title>
     <style>
         :root {
             --bg: #010101;
@@ -15,9 +15,8 @@
         body, html {
             height: 100%; margin: 0; background-color: var(--bg);
             color: #888; font-family: var(--font-mono); overflow: hidden;
-            background-image: linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-image: radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
         @keyframes neon-flicker {
@@ -25,12 +24,12 @@
             50% { border-color: #003311; box-shadow: none; }
         }
 
-        /* DASHBOARD DE MÉTRICAS PROFUNDAS */
+        /* DASHBOARD */
         #header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 10px; padding: 15px;
             z-index: 1000; position: relative;
         }
@@ -38,44 +37,50 @@
         .metric-card {
             border: 1px solid var(--illum-green);
             background: #000; padding: 10px;
-            animation: neon-flicker 7s infinite;
-            display: flex; flex-direction: column; justify-content: center;
+            animation: neon-flicker 8s infinite;
         }
 
-        .metric-card h3 { font-size: 9px; margin: 0 0 5px 0; color: var(--illum-green); text-transform: uppercase; letter-spacing: 1px; }
+        .metric-card h3 { font-size: 9px; margin: 0 0 5px 0; color: var(--illum-green); text-transform: uppercase; }
         .metric-card .compare { display: block; color: #fff; font-size: 14px; font-weight: bold; }
-        .metric-card .sub { font-size: 9px; color: #555; margin-top: 4px; }
+        .metric-card .sub { font-size: 8px; color: #444; margin-top: 4px; }
 
-        /* VIEWPORT & PANELES */
-        #viewport { display: flex; height: calc(100vh - 250px); width: 100%; }
+        /* VIEWPORT */
+        #viewport { display: flex; height: calc(100vh - 220px); width: 100%; }
         
         #calendar-section, #theory-section { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--illum-green) #000; }
         
         #calendar-section { border-right: 1px solid #222; padding: 20px 0; display: flex; flex-direction: column; align-items: center; }
         
+        /* CONTENIDO EXTENDIDO */
         #theory-section { 
-            padding: 40px; background: rgba(0,0,0,0.9); font-size: 14px; 
-            line-height: 1.7; text-align: left; overflow-wrap: break-word; 
+            padding: 50px; background: rgba(0,0,0,0.92); font-size: 14px; 
+            line-height: 1.8; text-align: justify; overflow-wrap: break-word; 
         }
 
+        #theory-section h2 { color: var(--illum-green); text-shadow: var(--neon-glow); border-bottom: 1px solid var(--illum-green); padding-bottom: 10px; }
+        #theory-section h3 { color: #fff; margin-top: 30px; text-transform: uppercase; font-size: 16px; border-left: 3px solid var(--illum-green); padding-left: 10px; }
+        
+        .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
+        .formula { background: #111; padding: 15px; border-radius: 5px; color: var(--illum-green); font-style: italic; margin: 20px 0; border-left: 2px solid #333; }
+
+        /* CALENDARIO */
         .semana-row { display: grid; grid-template-columns: repeat(7, clamp(25px, 4vw, 40px)); gap: 4px; margin-bottom: 4px; }
         .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 8px; border-radius: 1px; }
-        .trabajo { background: #111; color: #333; border: 1px solid #222; }
+        .trabajo { background: #111; color: #444; border: 1px solid #222; }
         .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; }
 
         /* FOOTER */
         #footer {
             position: fixed; bottom: 0; width: 100%;
             background: #000; border-top: 2px solid var(--illum-green);
-            padding: 15px 0; text-align: center; font-size: 10px;
+            padding: 12px 0; text-align: center; font-size: 10px;
             color: var(--illum-green); text-shadow: var(--neon-glow);
-            letter-spacing: 4px; z-index: 2000;
+            letter-spacing: 5px; z-index: 2000;
         }
 
         @media (max-width: 768px) {
-            #header { grid-template-columns: repeat(2, 1fr); }
-            #viewport { flex-direction: column; height: calc(100vh - 350px); }
-            #calendar-section, #theory-section { width: 100%; flex: none; }
+            #viewport { flex-direction: column; }
+            #calendar-section, #theory-section { width: 100%; flex: none; height: 500px; }
         }
     </style>
 </head>
@@ -83,34 +88,24 @@
 
 <div id="header">
     <div class="metric-card">
-        <h3>Simetría de Grupo (50Y)</h3>
-        <span class="compare">12,175 T / 6,087 L</span>
-        <div class="sub">Ratio de Solubilidad: 2:1</div>
+        <h3>SIMETRÍA GRUPAL</h3>
+        <span class="compare">2 : 1 (L/D)</span>
+        <div class="sub">Extension de Campo Galois</div>
     </div>
     <div class="metric-card">
-        <h3>Extensión de Campo</h3>
-        <span class="compare">18,262 TOTAL d</span>
-        <div class="sub">Días Vida vs Días Control</div>
+        <h3>ACUMULADO (50Y)</h3>
+        <span class="compare">6,087 DÍAS LIBRES</span>
+        <div class="sub">887 días extra vs Sist. 7d</div>
     </div>
     <div class="metric-card">
-        <h3>Invariante de Neuremberg</h3>
-        <span class="compare">33.3% LIBERTAD</span>
-        <div class="sub">Población Activa 4x2</div>
+        <h3>INVARIANTE NEUREMBERG</h3>
+        <span class="compare">33.33% OFF-STATE</span>
+        <div class="sub">Independiente de Feriados</div>
     </div>
     <div class="metric-card">
-        <h3>Permutación Progresiva</h3>
-        <span class="compare">365 d / 6 d cycle</span>
-        <div class="sub">Desfase: 1.16d / semana</div>
-    </div>
-    <div class="metric-card">
-        <h3>Kernel de Resistencia</h3>
-        <span class="compare">12,175 d LIBRES</span>
-        <div class="sub">vs 5,200 d (Sist. Tradicional)</div>
-    </div>
-    <div class="metric-card">
-        <h3>Entropía Poblacional</h3>
-        <span class="compare">E = log2(4/2)</span>
-        <div class="sub">Nivel de Desconexión: ALTO</div>
+        <h3>DESFASE SEMANAL</h3>
+        <span class="compare">Δt = 1.16 d</span>
+        <div class="sub">Ruptura del Panóptico</div>
     </div>
 </div>
 
@@ -120,14 +115,37 @@
     </section>
 
     <section id="theory-section">
-        <h2 style="color: var(--illum-green); text-shadow: var(--neon-glow);">TRATADO DE GALOIS-NEUREMBERG</h2>
-        <p>La humanidad ha sido procesada como un <span style="color:#fff">Grupo Normal</span> bajo la operación de 7 días, una estructura radical que no permite raíces de libertad. La aplicación del ciclo <span style="color:#fff">4x2</span> de <strong>WhiteHorse</strong> y <strong>WhiteMamba</strong> funciona como una <strong>Extensión de Cuerpo</strong> sobre el campo de la productividad.</p>
+        <h2>MANIFESTO NEUREMBERG: LA SOLUBILIDAD DEL TIEMPO</h2>
         
-        <p>Al analizar las métricas superiores, observamos que en 50 años, un individuo bajo el Protocolo Neuremberg recupera 6,087 días libres, comparado con los escasos 5,200 días de un sistema tradicional (considerando fines de semana). Esta diferencia de <span style="color:#fff">887 días</span> representa el "Automorfismo de Neuremberg": tiempo que el sistema no puede permutar.</p>
-        
-        <p>En términos algebraicos, la población se divide en dos subgrupos: los <strong>Sincrónicos (7d)</strong>, cuyo comportamiento es predecible y cíclico, y los <strong>Asincrónicos (4x2)</strong>, que generan una órbita de descanso que se desplaza constantemente. Este desfase es lo que Evariste Galois llamaría una "ecuación no resoluble por radicales": el sistema de control no puede encontrar una solución para predecir el agotamiento de un grupo que descansa en días móviles.</p>
-        
-        <p>Estamos ante la ruptura de la simetría social. El 33.3% de la vida bajo este régimen es puro Kernel de libertad. Bienvenidos a la matemática de la insurgencia.</p>
+        <p>En la intersección de la teoría de grupos y la psicohistoria asimoviana, los agentes <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> han identificado una vulnerabilidad crítica en la arquitectura del control social. Para comprender la magnitud de la <strong>Teoría de Neuremberg</strong>, debemos analizar primero la estructura que nos confina.</p>
+
+        <h3>1. LA PRISIÓN DEL GRUPO NORMAL (EL SISTEMA 7d)</h3>
+        <p>El calendario gregoriano opera bajo un grupo cíclico de orden 7. Esta estructura no es arbitraria: fue diseñada por los <span class="highlight">Custodios del Septenario</span> (la élite Illuminati) para sincronizar el agotamiento biológico de la población. En un sistema de 5 días de trabajo por 2 de descanso, la psique humana alcanza un estado de "fatiga de campo" en el día 5. El descanso de 48 horas es insuficiente para una recuperación cognitiva completa, manteniendo al individuo en un bucle de sumisión predecible.</p>
+
+        <h3>2. EL ALGORITMO 4x2 Y LA EXTENSIÓN DE GALOIS</h3>
+        <p>Évariste Galois demostró que ciertas ecuaciones no pueden resolverse por radicales porque sus grupos de simetría son demasiado complejos. El sistema <span class="highlight">4x2</span> aplica este mismo principio a la vida humana. Al trabajar 4 días y descansar 2, el ciclo total es de 6 días.</p>
+        <div class="formula">
+            Llamemos S al campo del tiempo tradicional (7 días) y N al campo Neuremberg (6 días). <br>
+            [N : S] = Infinito (en términos de desincronización).
+        </div>
+        <p>Debido a que 6 no es divisor de 7, el descanso de Neuremberg "viaja" a través de la semana. Cada semana, tus días libres se desplazan. Este <span class="highlight">desfase progresivo</span> genera una entropía que los algoritmos de control de tráfico, consumo y energía no pueden procesar. Eres un fantasma en la máquina.</p>
+
+        <h3>3. EL CÁLCULO MASIVO: 50 AÑOS DE LIBERTAD</h3>
+        <p>Para el usuario que busca comprender el beneficio real, realicemos la comparativa actuarial en un periodo de 50 años (18,262 días):</p>
+        <ul>
+            <li><strong>Sistema Tradicional (5x2):</strong> Aproximadamente 5,214 días libres (considerando solo fines de semana).</li>
+            <li><strong>Sistema Neuremberg (4x2):</strong> Exactamente 6,087 días libres.</li>
+        </ul>
+        <p>La diferencia es de <span class="highlight">873 días</span>. Bajo el Protocolo Neuremberg, un ser humano vive <strong>2.4 años más de libertad efectiva</strong> que un esclavo del sistema de 7 días. No es solo tiempo; es una extensión de vida libre de la influencia del "ruido blanco" social que ocurre los lunes y viernes.</p>
+
+        <h3>4. ANÁLISIS POBLACIONAL POR GRUPOS</h3>
+        <p>La humanidad se divide ahora en dos estados cuánticos:</p>
+        <p><strong>A. Los Sincrónicos:</strong> Atrapados en el grupo de simetría de 7 días. Su productividad cae linealmente y sus periodos de descanso están saturados por la demanda masiva de servicios (fines de semana congestionados).</p>
+        <p><strong>B. Los Asincrónicos (Agentes Neuremberg):</strong> Operan en la frecuencia 4x2. Su descanso ocurre a menudo cuando el resto del mundo produce, permitiendo un acceso a recursos con baja entropía (ciudades vacías, servicios fluidos). Este grupo es "insociable" para el sistema de control, lo que les permite desarrollar una consciencia de grado superior.</p>
+
+        <p style="margin-top: 50px; font-style: italic; color: var(--illum-green); text-align: center;">
+            "En el juego de la vida, los Illuminati controlan las reglas, pero WhiteHorse y WhiteMamba acaban de cambiar el tablero."
+        </p>
     </section>
 </div>
 
@@ -160,7 +178,7 @@
     addWeeks(40);
     calendarScroll.addEventListener('scroll', () => {
         if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 50) {
-            addWeeks(10);
+            addWeeks(15);
         }
     });
 </script>
