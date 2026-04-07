@@ -8,79 +8,95 @@
         :root {
             --bg: #010101;
             --illum-green: #00ff41;
-            --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7);
-            --font-mono: 'Courier New', Courier, monospace;
+            --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 5px rgba(0, 255, 65, 0.5);
+            --font-size-base: clamp(14px, 1.1vw, 18px);
+            --font-size-title: clamp(20px, 2.5vw, 28px);
         }
 
         body, html {
             height: 100%; margin: 0; background-color: var(--bg);
-            color: #888; font-family: var(--font-mono); overflow: hidden;
-            background-image: radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
+            color: #bbb; font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            background-image: radial-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px);
+            background-size: 25px 25px;
         }
 
         @keyframes neon-flicker {
-            0%, 100% { border-color: var(--illum-green); box-shadow: var(--neon-glow); }
-            50% { border-color: #003311; box-shadow: none; }
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { border-color: var(--illum-green); box-shadow: var(--neon-glow); opacity: 1; }
+            20%, 22%, 24%, 55% { border-color: #004411; box-shadow: none; opacity: 0.6; }
         }
 
-        /* DASHBOARD */
+        /* DASHBOARD: 6 MÉTRICAS DE COMPARACIÓN PROFUNDA */
         #header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 10px; padding: 15px;
-            z-index: 1000; position: relative;
+            position: relative; z-index: 1000;
         }
 
         .metric-card {
             border: 1px solid var(--illum-green);
             background: #000; padding: 10px;
-            animation: neon-flicker 8s infinite;
+            animation: neon-flicker 7s infinite;
+            display: flex; flex-direction: column; justify-content: center;
         }
-
         .metric-card h3 { font-size: 9px; margin: 0 0 5px 0; color: var(--illum-green); text-transform: uppercase; }
         .metric-card .compare { display: block; color: #fff; font-size: 14px; font-weight: bold; }
-        .metric-card .sub { font-size: 8px; color: #444; margin-top: 4px; }
+        .metric-card .sub { font-size: 8px; color: #555; margin-top: 4px; }
 
-        /* VIEWPORT */
-        #viewport { display: flex; height: calc(100vh - 220px); width: 100%; }
-        
-        #calendar-section, #theory-section { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--illum-green) #000; }
-        
-        #calendar-section { border-right: 1px solid #222; padding: 20px 0; display: flex; flex-direction: column; align-items: center; }
-        
-        /* CONTENIDO EXTENDIDO */
-        #theory-section { 
-            padding: 50px; background: rgba(0,0,0,0.92); font-size: 14px; 
-            line-height: 1.8; text-align: justify; overflow-wrap: break-word; 
+        /* NAVEGACIÓN MÓVIL (BOTONES REINSTALADOS) */
+        #mobile-nav {
+            display: none; background: #000; border-bottom: 1px solid var(--illum-green);
+            padding: 10px; justify-content: space-around; z-index: 1001;
+        }
+        .nav-btn {
+            background: transparent; border: 1px solid var(--illum-green);
+            color: var(--illum-green); padding: 8px 15px; font-family: inherit;
+            font-size: 0.85rem; cursor: pointer; text-shadow: var(--neon-glow);
+        }
+        .nav-btn.active { background: var(--illum-green); color: #000; box-shadow: var(--neon-glow); }
+
+        /* VIEWPORT DINÁMICO */
+        #viewport { display: flex; height: calc(100vh - 280px); width: 100%; }
+
+        /* PANELES INDEPENDIENTES */
+        #calendar-section, #theory-section {
+            flex: 1; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: var(--illum-green) #000;
         }
 
-        #theory-section h2 { color: var(--illum-green); text-shadow: var(--neon-glow); border-bottom: 1px solid var(--illum-green); padding-bottom: 10px; }
-        #theory-section h3 { color: #fff; margin-top: 30px; text-transform: uppercase; font-size: 16px; border-left: 3px solid var(--illum-green); padding-left: 10px; }
-        
-        .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
-        .formula { background: #111; padding: 15px; border-radius: 5px; color: var(--illum-green); font-style: italic; margin: 20px 0; border-left: 2px solid #333; }
+        #calendar-section { border-right: 1px solid #222; padding: 20px 0; display: flex; flex-direction: column; align-items: center; }
 
-        /* CALENDARIO */
-        .semana-row { display: grid; grid-template-columns: repeat(7, clamp(25px, 4vw, 40px)); gap: 4px; margin-bottom: 4px; }
+        #theory-section {
+            padding: 45px; background: rgba(0,0,0,0.85);
+            font-size: var(--font-size-base); line-height: 1.7;
+            text-align: left; overflow-wrap: break-word;
+        }
+
+        #theory-section h2 { font-size: var(--font-size-title); color: var(--illum-green); text-shadow: var(--neon-glow); border-left: 5px solid var(--illum-green); padding-left: 15px; margin-bottom: 30px; }
+        #theory-section h3 { color: #fff; margin-top: 35px; text-transform: uppercase; font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+        .formula { background: #080808; padding: 20px; border-radius: 4px; color: var(--illum-green); font-style: italic; margin: 25px 0; border: 1px solid #222; font-size: 0.9rem; line-height: 1.4; }
+        .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
+
+        /* DÍAS CALENDARIO */
+        .semana-row { display: grid; grid-template-columns: repeat(7, clamp(25px, 4vw, 40px)); gap: 5px; margin-bottom: 5px; }
         .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 8px; border-radius: 1px; }
-        .trabajo { background: #111; color: #444; border: 1px solid #222; }
-        .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; }
+        .trabajo { background: #111; color: #333; border: 1px solid #222; }
+        .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; animation: neon-flicker 8s infinite; }
 
         /* FOOTER */
-        #footer {
-            position: fixed; bottom: 0; width: 100%;
-            background: #000; border-top: 2px solid var(--illum-green);
-            padding: 12px 0; text-align: center; font-size: 10px;
-            color: var(--illum-green); text-shadow: var(--neon-glow);
-            letter-spacing: 5px; z-index: 2000;
-        }
+        #footer { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--illum-green); padding: 15px 0; text-align: center; font-size: 0.75rem; color: var(--illum-green); text-shadow: var(--neon-glow); letter-spacing: 5px; z-index: 2000; }
 
         @media (max-width: 768px) {
-            #viewport { flex-direction: column; }
-            #calendar-section, #theory-section { width: 100%; flex: none; height: 500px; }
+            #mobile-nav { display: flex; }
+            #viewport { height: calc(100vh - 380px); }
+            #calendar-section, #theory-section { display: none; width: 100%; flex: none; border-right: none; }
+            #calendar-section.active-panel { display: flex; }
+            #theory-section.active-panel { display: block; }
+            #theory-section { padding: 30px 20px; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -88,64 +104,75 @@
 
 <div id="header">
     <div class="metric-card">
-        <h3>SIMETRÍA GRUPAL</h3>
-        <span class="compare">2 : 1 (L/D)</span>
-        <div class="sub">Extension de Campo Galois</div>
+        <h3>SIMETRÍA GRUPAL (50Y)</h3>
+        <span class="compare">12,175 T / 6,087 L</span>
+        <div class="sub">Ratio de Solubilidad: 2:1</div>
     </div>
     <div class="metric-card">
-        <h3>ACUMULADO (50Y)</h3>
-        <span class="compare">6,087 DÍAS LIBRES</span>
-        <div class="sub">887 días extra vs Sist. 7d</div>
+        <h3>EXTENSIÓN DE CAMPO</h3>
+        <span class="compare">18,262 TOTAL d</span>
+        <div class="sub">Días Vida vs Días Control</div>
     </div>
     <div class="metric-card">
         <h3>INVARIANTE NEUREMBERG</h3>
-        <span class="compare">33.33% OFF-STATE</span>
-        <div class="sub">Independiente de Feriados</div>
+        <span class="compare">33.3% LIBERTAD</span>
+        <div class="sub">Población Activa 4x2</div>
     </div>
     <div class="metric-card">
         <h3>DESFASE SEMANAL</h3>
         <span class="compare">Δt = 1.16 d</span>
         <div class="sub">Ruptura del Panóptico</div>
     </div>
+    <div class="metric-card">
+        <h3>KERNEL DE RESISTENCIA</h3>
+        <span class="compare">+887 d LIBRES</span>
+        <div class="sub">vs Sistema Tradicional 7d</div>
+    </div>
+    <div class="metric-card">
+        <h3>ENTROPÍA POBLACIONAL</h3>
+        <span class="compare">E = log2(4/2)</span>
+        <div class="sub">Nivel de Desconexión: MÁXIMO</div>
+    </div>
 </div>
 
+<nav id="mobile-nav">
+    <button id="btn-cal" class="nav-btn active" onclick="switchPanel('calendar')">GRÁFICO</button>
+    <button id="btn-theo" class="nav-btn" onclick="switchPanel('theory')">TEORÍA</button>
+</nav>
+
 <div id="viewport">
-    <section id="calendar-section">
+    <section id="calendar-section" class="active-panel">
         <div id="timeline"></div>
     </section>
 
     <section id="theory-section">
         <h2>MANIFESTO NEUREMBERG: LA SOLUBILIDAD DEL TIEMPO</h2>
-        
-        <p>En la intersección de la teoría de grupos y la psicohistoria asimoviana, los agentes <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> han identificado una vulnerabilidad crítica en la arquitectura del control social. Para comprender la magnitud de la <strong>Teoría de Neuremberg</strong>, debemos analizar primero la estructura que nos confina.</p>
+        <p>En la intersección de la teoría de grupos de Galois y la psicohistoria, los agentes <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> han identificado una vulnerabilidad crítica en la arquitectura del control social. La <strong>Teoría de Neuremberg</strong> no es solo una propuesta de organización, es una corrección matemática de la existencia.</p>
 
-        <h3>1. LA PRISIÓN DEL GRUPO NORMAL (EL SISTEMA 7d)</h3>
-        <p>El calendario gregoriano opera bajo un grupo cíclico de orden 7. Esta estructura no es arbitraria: fue diseñada por los <span class="highlight">Custodios del Septenario</span> (la élite Illuminati) para sincronizar el agotamiento biológico de la población. En un sistema de 5 días de trabajo por 2 de descanso, la psique humana alcanza un estado de "fatiga de campo" en el día 5. El descanso de 48 horas es insuficiente para una recuperación cognitiva completa, manteniendo al individuo en un bucle de sumisión predecible.</p>
+        <h3>1. LA PRISIÓN DEL GRUPO NORMAL (7d)</h3>
+        <p>El calendario gregoriano opera bajo un grupo cíclico de orden 7. Esta estructura no es casual: fue diseñada para sincronizar el agotamiento masivo. En el sistema de 5x2, la psique humana alcanza un estado de fatiga residual acumulada. El descanso de 48 horas es insuficiente para una recuperación real, manteniendo al individuo en un bucle predecible de sumisión laboral y consumo compensatorio.</p>
 
         <h3>2. EL ALGORITMO 4x2 Y LA EXTENSIÓN DE GALOIS</h3>
-        <p>Évariste Galois demostró que ciertas ecuaciones no pueden resolverse por radicales porque sus grupos de simetría son demasiado complejos. El sistema <span class="highlight">4x2</span> aplica este mismo principio a la vida humana. Al trabajar 4 días y descansar 2, el ciclo total es de 6 días.</p>
+        <p>Évariste Galois demostró que ciertas simetrías son demasiado complejas para ser resueltas por métodos convencionales. Al aplicar un ciclo de 6 días (4 laborables, 2 libres) en un mundo de 7, generamos una desincronización fractal.</p>
         <div class="formula">
-            Llamemos S al campo del tiempo tradicional (7 días) y N al campo Neuremberg (6 días). <br>
-            [N : S] = Infinito (en términos de desincronización).
+            Sea G el grupo del sistema (7d) y N el subgrupo Neuremberg (6d). <br>
+            Puesto que mcd(6,7)=1, el desfase es irreductible. <br>
+            Δt = (1 - 6/7) mod 1 → Genera una órbita de libertad perpetuamente móvil.
         </div>
-        <p>Debido a que 6 no es divisor de 7, el descanso de Neuremberg "viaja" a través de la semana. Cada semana, tus días libres se desplazan. Este <span class="highlight">desfase progresivo</span> genera una entropía que los algoritmos de control de tráfico, consumo y energía no pueden procesar. Eres un fantasma en la máquina.</p>
+        <p>Debido a que 6 no es divisor de 7, tus días libres se desplazan constantemente a través de la semana. Este <span class="highlight">desfase progresivo</span> impide que los algoritmos de control (tráfico, energía, consumo) sincronicen tus periodos de inactividad con el resto de la "masa". Eres un error de cálculo en su sistema de vigilancia.</p>
 
-        <h3>3. EL CÁLCULO MASIVO: 50 AÑOS DE LIBERTAD</h3>
-        <p>Para el usuario que busca comprender el beneficio real, realicemos la comparativa actuarial en un periodo de 50 años (18,262 días):</p>
+        <h3>3. EL CÁLCULO ACTUARIAL: LA GANANCIA DE VIDA</h3>
+        <p>Cualquier usuario puede comprender el impacto real al observar una vida laboral de 50 años (18,262 días):</p>
         <ul>
-            <li><strong>Sistema Tradicional (5x2):</strong> Aproximadamente 5,214 días libres (considerando solo fines de semana).</li>
-            <li><strong>Sistema Neuremberg (4x2):</strong> Exactamente 6,087 días libres.</li>
+            <li><strong>Sistema Tradicional:</strong> ~5,214 días libres (fines de semana).</li>
+            <li><strong>Sistema Neuremberg:</strong> 6,087 días libres (OFF-cycles).</li>
         </ul>
-        <p>La diferencia es de <span class="highlight">873 días</span>. Bajo el Protocolo Neuremberg, un ser humano vive <strong>2.4 años más de libertad efectiva</strong> que un esclavo del sistema de 7 días. No es solo tiempo; es una extensión de vida libre de la influencia del "ruido blanco" social que ocurre los lunes y viernes.</p>
+        <p>El Protocolo Neuremberg otorga <span class="highlight">873 días adicionales de libertad</span>. Esto equivale a vivir <strong>2.4 años más</strong> que el resto de la población. No es solo tiempo; es tiempo recuperado de la influencia del ruido social masivo.</p>
 
-        <h3>4. ANÁLISIS POBLACIONAL POR GRUPOS</h3>
-        <p>La humanidad se divide ahora en dos estados cuánticos:</p>
-        <p><strong>A. Los Sincrónicos:</strong> Atrapados en el grupo de simetría de 7 días. Su productividad cae linealmente y sus periodos de descanso están saturados por la demanda masiva de servicios (fines de semana congestionados).</p>
-        <p><strong>B. Los Asincrónicos (Agentes Neuremberg):</strong> Operan en la frecuencia 4x2. Su descanso ocurre a menudo cuando el resto del mundo produce, permitiendo un acceso a recursos con baja entropía (ciudades vacías, servicios fluidos). Este grupo es "insociable" para el sistema de control, lo que les permite desarrollar una consciencia de grado superior.</p>
-
-        <p style="margin-top: 50px; font-style: italic; color: var(--illum-green); text-align: center;">
-            "En el juego de la vida, los Illuminati controlan las reglas, pero WhiteHorse y WhiteMamba acaban de cambiar el tablero."
-        </p>
+        <h3>4. COMPORTAMIENTO DE GRUPOS POBLACIONALES</h3>
+        <p>La humanidad se divide en dos estados: los <strong>Sincrónicos (7d)</strong>, cuyo descanso está saturado por la demanda masiva de servicios, y los <strong>Asincrónicos (Agentes Neuremberg)</strong>, que disfrutan de la infraestructura global cuando esta se encuentra en su punto de menor entropía. Al descansar cuando el mundo produce, el Agente Neuremberg duplica la eficiencia de su ocio.</p>
+        
+        <p style="color: var(--illum-green); font-size: 0.7rem; margin-top: 40px; text-align: center;">[FIN DE LA TRANSMISIÓN - PROTOCOLO ACTIVADO]</p>
     </section>
 </div>
 
@@ -154,6 +181,9 @@
 <script>
     const timeline = document.getElementById('timeline');
     const calendarScroll = document.getElementById('calendar-section');
+    const theorySection = document.getElementById('theory-section');
+    const btnCal = document.getElementById('btn-cal');
+    const btnTheo = document.getElementById('btn-theo');
     let totalDays = 0;
 
     function addWeeks(n) {
@@ -175,9 +205,23 @@
         }
     }
 
+    function switchPanel(mode) {
+        if (mode === 'calendar') {
+            calendarScroll.classList.add('active-panel');
+            theorySection.classList.remove('active-panel');
+            btnCal.classList.add('active');
+            btnTheo.classList.remove('active');
+        } else {
+            calendarScroll.classList.remove('active-panel');
+            theorySection.classList.add('active-panel');
+            btnTheo.classList.add('active');
+            btnCal.classList.remove('active');
+        }
+    }
+
     addWeeks(40);
     calendarScroll.addEventListener('scroll', () => {
-        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 50) {
+        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 100) {
             addWeeks(15);
         }
     });
