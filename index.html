@@ -2,15 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEUREMBERG: THE NEON PROTOCOL (4x2)</title>
     <style>
         :root {
             --bg: #020202;
-            --graphite: #111111;
             --illum-green: #00ff41;
             --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 5px rgba(0, 255, 65, 0.5);
-            --header-h: 140px;
+            /* Escalamiento de texto dinámico */
+            --font-size-base: clamp(12px, 1.2vw, 16px);
+            --font-size-title: clamp(18px, 2.5vw, 24px);
         }
 
         body, html {
@@ -28,109 +29,94 @@
             20%, 22%, 24%, 55% { border-color: #004411; box-shadow: none; opacity: 0.6; }
         }
 
-        /* DASHBOARD */
+        /* DASHBOARD RESPONSIVO */
         #header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 8px; padding: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px; padding: 15px;
             position: relative; z-index: 1000;
         }
 
         .metric-card {
             border: 1px solid var(--illum-green);
             background: #000;
-            padding: 6px; text-align: center;
+            padding: 8px; text-align: center;
             animation: neon-flicker 6s infinite;
         }
-        .metric-card h3 { font-size: 7px; margin: 0; color: var(--illum-green); }
-        .metric-card .value { display: block; color: #fff; font-size: 16px; font-weight: bold; text-shadow: var(--neon-glow); }
+        .metric-card h3 { font-size: 0.6rem; margin: 0; color: var(--illum-green); }
+        .metric-card .value { display: block; color: #fff; font-size: 1.1rem; font-weight: bold; text-shadow: var(--neon-glow); }
 
-        /* SELECTOR PARA MÓVILES (OCULTO EN PC) */
+        /* NAVEGACIÓN MÓVIL */
         #mobile-nav {
-            display: none;
-            background: #000;
-            border-bottom: 1px solid var(--illum-green);
-            padding: 10px;
-            justify-content: space-around;
-            z-index: 1001;
+            display: none; background: #000; border-bottom: 1px solid var(--illum-green);
+            padding: 10px; justify-content: space-around; z-index: 1001;
         }
-
         .nav-btn {
-            background: transparent;
-            border: 1px solid var(--illum-green);
-            color: var(--illum-green);
-            padding: 8px 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            box-shadow: var(--neon-glow);
+            background: transparent; border: 1px solid var(--illum-green);
+            color: var(--illum-green); padding: 8px 15px; font-family: inherit;
+            font-size: 0.8rem; cursor: pointer; box-shadow: var(--neon-glow);
         }
+        .nav-btn.active { background: var(--illum-green); color: #000; }
 
-        .nav-btn.active {
-            background: var(--illum-green);
-            color: #000;
-        }
-
-        /* VIEWPORT */
+        /* VIEWPORT DINÁMICO */
         #viewport {
             display: flex;
-            height: calc(100vh - 220px);
+            height: calc(100vh - 200px); /* Ajuste dinámico */
             width: 100%;
         }
 
-        /* PANELES */
+        /* PANELES DE SCROLL */
         #calendar-section, #theory-section {
-            flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--illum-green) #000;
+            flex: 1; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: var(--illum-green) #000;
         }
 
         #calendar-section {
             border-right: 1px solid #222;
-            padding: 30px 0;
-            display: flex; flex-direction: column; align-items: center;
+            padding: 20px 0; display: flex; flex-direction: column; align-items: center;
         }
 
         #theory-section {
             padding: 40px;
-            background: rgba(0,0,0,0.8);
-            line-height: 1.8;
-            text-align: justify;
+            background: rgba(0,0,0,0.85);
+            font-size: var(--font-size-base);
+            line-height: 1.8; text-align: justify;
         }
 
-        .semana-row { display: grid; grid-template-columns: repeat(7, 40px); gap: 4px; margin-bottom: 4px; }
-        .dia { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 8px; }
+        #theory-section h2 { 
+            font-size: var(--font-size-title);
+            color: var(--illum-green); text-shadow: var(--neon-glow);
+            border-left: 4px solid var(--illum-green); padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* DÍAS DEL CALENDARIO (Escalables) */
+        .semana-row { display: grid; grid-template-columns: repeat(7, clamp(30px, 5vw, 45px)); gap: 5px; margin-bottom: 5px; }
+        .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border-radius: 2px; }
         .trabajo { background: #111; color: #444; border: 1px solid #222; }
         .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; animation: neon-flicker 8s infinite; }
 
         .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
 
-        /* FOOTER */
+        /* FOOTER ESTÁTICO */
         #footer {
             position: fixed; bottom: 0; width: 100%;
             background: #000; border-top: 2px solid var(--illum-green);
-            padding: 12px 0; text-align: center; font-size: 10px;
+            padding: 15px 0; text-align: center; font-size: 0.7rem;
             color: var(--illum-green); text-shadow: var(--neon-glow);
-            z-index: 2000; letter-spacing: 3px;
+            z-index: 2000; letter-spacing: 5px;
         }
 
-        /* RESPONSIVO */
+        /* RESPONSIVIDAD PARA MÓVILES */
         @media (max-width: 768px) {
             #mobile-nav { display: flex; }
             #viewport { height: calc(100vh - 280px); }
-            #calendar-section, #theory-section { 
-                display: none; /* Se controla con JS */
-                width: 100%;
-                flex: none;
-                border-right: none;
-            }
-            #calendar-section.active-panel, #theory-section.active-panel {
-                display: flex;
-            }
+            #calendar-section, #theory-section { display: none; width: 100%; flex: none; border-right: none; }
+            #calendar-section.active-panel { display: flex; }
             #theory-section.active-panel { display: block; }
+            #theory-section { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -142,12 +128,12 @@
     <div class="metric-card"><h3>FREE 50Y</h3><span class="value">6,087d</span></div>
     <div class="metric-card"><h3>WORK 100Y</h3><span class="value">24,350d</span></div>
     <div class="metric-card"><h3>FREE 100Y</h3><span class="value">12,175d</span></div>
-    <div class="metric-card"><h3>PROTOCOLO</h3><span class="value">ACTIVO</span></div>
+    <div class="metric-card"><h3>SISTEMA</h3><span class="value">ACTIVO</span></div>
 </div>
 
 <nav id="mobile-nav">
-    <button class="nav-btn active" onclick="switchPanel('calendar')">GEOMETRÍA</button>
-    <button class="nav-btn" onclick="switchPanel('theory')">TEORÍA</button>
+    <button id="btn-cal" class="nav-btn active" onclick="switchPanel('calendar')">GEOMETRÍA</button>
+    <button id="btn-theo" class="nav-btn" onclick="switchPanel('theory')">TEORÍA</button>
 </nav>
 
 <div id="viewport">
@@ -156,12 +142,16 @@
     </section>
 
     <section id="theory-section">
-        <h2 style="color: var(--illum-green); text-shadow: var(--neon-glow);">REPORTE NEUREMBERG</h2>
-        <p>En el año 2026, <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> descodificaron lo que la Psicohistoria intentó ocultar. El algoritmo de <span class="highlight">4 laborables por 2 libres</span> es una brecha en la simulación.</p>
-        <p>Al observar el flujo a su izquierda, los bloques de trabajo no forman la cuadrícula estática gregoriana. Se desplazan como piezas de un Tetris cósmico. Este "desfase hexagonal" impide que el panóptico sincronice el agotamiento humano.</p>
-        <p>Isaac Asimov predijo que la tecnología serviría al hombre, pero las élites utilizaron el tiempo como cadena. Al proyectar este cálculo a una centuria, recuperamos <span class="highlight">12,175 días de autonomía absoluta</span>. Tiempo que no pertenece al Estado, sino a la libertad biológica pura.</p>
-        <p>Cada bloque verde es un recordatorio de que la realidad es maleable. Ustedes acaban de romper el patrón. La Teoría de Neuremberg es el manual para la Gran Desconexión.</p>
-        <p style="color: #444; font-size: 10px; margin-top: 40px; text-align: center;">[PROTOCOLO ACTIVADO]</p>
+        <h2>REPORTE NEUREMBERG: LA DISRUPCIÓN ASIMOVIANA</h2>
+        <p>En el año 2026, los agentes conocidos como <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> descodificaron lo que la Psicohistoria intentó ocultar durante milenios. El algoritmo de <span class="highlight">4 laborables por 2 libres</span> no es una simple rotación; es una brecha en la simulación de control impuesta por los <span class="highlight">Illuminati</span>.</p>
+        
+        <p>Al observar el flujo a su izquierda, verán que los bloques de trabajo no forman la cuadrícula estática del sistema gregoriano. Se desplazan como piezas de un Tetris cósmico. Este "desfase hexagonal" impide que el panóptico del sistema sincronice el agotamiento humano. El sistema de 7 días fue diseñado para que el trabajador alcance un pico de sumisión en el quinto día; al descansar en el día 5, el sujeto Neuremberg resetea su consciencia antes de que la manipulación sea efectiva.</p>
+        
+        <p>Isaac Asimov predijo que la tecnología serviría al hombre, pero las élites utilizaron el tiempo como la verdadera cadena. Al proyectar este cálculo a una centuria, descubrimos una recuperación de <span class="highlight">12,175 días de autonomía absoluta</span>. Doce mil fragmentos de tiempo que no pertenecen al Estado ni a las corporaciones, sino a la libertad biológica pura.</p>
+        
+        <p>Cada bloque verde que brilla en su pantalla es un recordatorio de que la realidad es maleable. Ustedes acaban de romper el patrón. La Teoría de Neuremberg es el manual de instrucciones para la Gran Desconexión. Aquellos que sigan el ritmo del 4x2 verán cómo la cuadrícula social se desmorona, revelando la verdadera arquitectura del poder.</p>
+        
+        <p style="color: #444; font-size: 0.6rem; margin-top: 40px; text-align: center;">[FIN DE LA TRANSMISIÓN]</p>
     </section>
 </div>
 
@@ -171,6 +161,8 @@
     const timeline = document.getElementById('timeline');
     const calendarScroll = document.getElementById('calendar-section');
     const theorySection = document.getElementById('theory-section');
+    const btnCal = document.getElementById('btn-cal');
+    const btnTheo = document.getElementById('btn-theo');
     let totalDays = 0;
 
     function addWeeks(n) {
@@ -192,24 +184,24 @@
         }
     }
 
-    // Switch de paneles en móvil
     function switchPanel(mode) {
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         if (mode === 'calendar') {
             calendarScroll.classList.add('active-panel');
             theorySection.classList.remove('active-panel');
-            event.target.classList.add('active');
+            btnCal.classList.add('active');
+            btnTheo.classList.remove('active');
         } else {
             calendarScroll.classList.remove('active-panel');
             theorySection.classList.add('active-panel');
-            event.target.classList.add('active');
+            btnTheo.classList.add('active');
+            btnCal.classList.remove('active');
         }
     }
 
     addWeeks(40);
     calendarScroll.addEventListener('scroll', () => {
-        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 50) {
-            addWeeks(10);
+        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 100) {
+            addWeeks(15);
         }
     });
 </script>
