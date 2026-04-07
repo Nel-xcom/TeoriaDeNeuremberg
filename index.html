@@ -9,9 +9,8 @@
             --bg: #020202;
             --illum-green: #00ff41;
             --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 5px rgba(0, 255, 65, 0.5);
-            /* Escalamiento de texto dinámico */
-            --font-size-base: clamp(12px, 1.2vw, 16px);
-            --font-size-title: clamp(18px, 2.5vw, 24px);
+            --font-size-base: clamp(14px, 1.1vw, 18px);
+            --font-size-title: clamp(20px, 2.5vw, 28px);
         }
 
         body, html {
@@ -29,7 +28,7 @@
             20%, 22%, 24%, 55% { border-color: #004411; box-shadow: none; opacity: 0.6; }
         }
 
-        /* DASHBOARD RESPONSIVO */
+        /* DASHBOARD */
         #header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
@@ -56,18 +55,18 @@
         .nav-btn {
             background: transparent; border: 1px solid var(--illum-green);
             color: var(--illum-green); padding: 8px 15px; font-family: inherit;
-            font-size: 0.8rem; cursor: pointer; box-shadow: var(--neon-glow);
+            font-size: 0.8rem; cursor: pointer;
         }
-        .nav-btn.active { background: var(--illum-green); color: #000; }
+        .nav-btn.active { background: var(--illum-green); color: #000; box-shadow: var(--neon-glow); }
 
-        /* VIEWPORT DINÁMICO */
+        /* VIEWPORT */
         #viewport {
             display: flex;
-            height: calc(100vh - 200px); /* Ajuste dinámico */
+            height: calc(100vh - 200px);
             width: 100%;
         }
 
-        /* PANELES DE SCROLL */
+        /* PANELES */
         #calendar-section, #theory-section {
             flex: 1; overflow-y: auto;
             scrollbar-width: thin; scrollbar-color: var(--illum-green) #000;
@@ -78,11 +77,21 @@
             padding: 20px 0; display: flex; flex-direction: column; align-items: center;
         }
 
+        /* AJUSTE DE TEXTO CRÍTICO */
         #theory-section {
             padding: 40px;
             background: rgba(0,0,0,0.85);
             font-size: var(--font-size-base);
-            line-height: 1.8; text-align: justify;
+            line-height: 1.6;
+            text-align: left; /* Cambiado de justify para evitar estiramientos raros */
+            overflow-wrap: break-word; /* Evita que las palabras se salgan */
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        #theory-section p {
+            max-width: 100%; /* Asegura que no pase del contenedor */
+            margin-bottom: 20px;
         }
 
         #theory-section h2 { 
@@ -90,9 +99,10 @@
             color: var(--illum-green); text-shadow: var(--neon-glow);
             border-left: 4px solid var(--illum-green); padding-left: 15px;
             margin-bottom: 25px;
+            overflow-wrap: break-word;
         }
 
-        /* DÍAS DEL CALENDARIO (Escalables) */
+        /* CALENDARIO */
         .semana-row { display: grid; grid-template-columns: repeat(7, clamp(30px, 5vw, 45px)); gap: 5px; margin-bottom: 5px; }
         .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border-radius: 2px; }
         .trabajo { background: #111; color: #444; border: 1px solid #222; }
@@ -100,7 +110,7 @@
 
         .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
 
-        /* FOOTER ESTÁTICO */
+        /* FOOTER */
         #footer {
             position: fixed; bottom: 0; width: 100%;
             background: #000; border-top: 2px solid var(--illum-green);
@@ -109,14 +119,13 @@
             z-index: 2000; letter-spacing: 5px;
         }
 
-        /* RESPONSIVIDAD PARA MÓVILES */
         @media (max-width: 768px) {
             #mobile-nav { display: flex; }
             #viewport { height: calc(100vh - 280px); }
             #calendar-section, #theory-section { display: none; width: 100%; flex: none; border-right: none; }
             #calendar-section.active-panel { display: flex; }
             #theory-section.active-panel { display: block; }
-            #theory-section { padding: 30px 20px; }
+            #theory-section { padding: 30px 20px; box-sizing: border-box; }
         }
     </style>
 </head>
