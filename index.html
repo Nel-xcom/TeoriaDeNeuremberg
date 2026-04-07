@@ -3,164 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEUREMBERG: THE NEON PROTOCOL (4x2)</title>
+    <title>NEUREMBERG: GALOIS FIELD THEORY (4x2)</title>
     <style>
         :root {
-            --bg: #020202;
+            --bg: #010101;
             --illum-green: #00ff41;
-            --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7), 0 0 5px rgba(0, 255, 65, 0.5);
-            --font-size-base: clamp(14px, 1.1vw, 18px);
-            --font-size-title: clamp(20px, 2.5vw, 28px);
+            --neon-glow: 0 0 15px rgba(0, 255, 65, 0.7);
+            --font-mono: 'Courier New', Courier, monospace;
         }
 
         body, html {
-            height: 100%; margin: 0;
-            background-color: var(--bg);
-            color: #bbb;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            background-image: radial-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px);
-            background-size: 25px 25px;
+            height: 100%; margin: 0; background-color: var(--bg);
+            color: #888; font-family: var(--font-mono); overflow: hidden;
+            background-image: linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         @keyframes neon-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { border-color: var(--illum-green); box-shadow: var(--neon-glow); opacity: 1; }
-            20%, 22%, 24%, 55% { border-color: #004411; box-shadow: none; opacity: 0.6; }
+            0%, 100% { border-color: var(--illum-green); box-shadow: var(--neon-glow); }
+            50% { border-color: #003311; box-shadow: none; }
         }
 
-        /* DASHBOARD */
+        /* DASHBOARD DE MÉTRICAS PROFUNDAS */
         #header {
             background: rgba(0, 0, 0, 0.95);
             border-bottom: 2px solid var(--illum-green);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 10px; padding: 15px;
-            position: relative; z-index: 1000;
+            z-index: 1000; position: relative;
         }
 
         .metric-card {
             border: 1px solid var(--illum-green);
-            background: #000;
-            padding: 8px; text-align: center;
-            animation: neon-flicker 6s infinite;
-        }
-        .metric-card h3 { font-size: 0.6rem; margin: 0; color: var(--illum-green); }
-        .metric-card .value { display: block; color: #fff; font-size: 1.1rem; font-weight: bold; text-shadow: var(--neon-glow); }
-
-        /* NAVEGACIÓN MÓVIL */
-        #mobile-nav {
-            display: none; background: #000; border-bottom: 1px solid var(--illum-green);
-            padding: 10px; justify-content: space-around; z-index: 1001;
-        }
-        .nav-btn {
-            background: transparent; border: 1px solid var(--illum-green);
-            color: var(--illum-green); padding: 8px 15px; font-family: inherit;
-            font-size: 0.8rem; cursor: pointer;
-        }
-        .nav-btn.active { background: var(--illum-green); color: #000; box-shadow: var(--neon-glow); }
-
-        /* VIEWPORT */
-        #viewport {
-            display: flex;
-            height: calc(100vh - 200px);
-            width: 100%;
+            background: #000; padding: 10px;
+            animation: neon-flicker 7s infinite;
+            display: flex; flex-direction: column; justify-content: center;
         }
 
-        /* PANELES */
-        #calendar-section, #theory-section {
-            flex: 1; overflow-y: auto;
-            scrollbar-width: thin; scrollbar-color: var(--illum-green) #000;
+        .metric-card h3 { font-size: 9px; margin: 0 0 5px 0; color: var(--illum-green); text-transform: uppercase; letter-spacing: 1px; }
+        .metric-card .compare { display: block; color: #fff; font-size: 14px; font-weight: bold; }
+        .metric-card .sub { font-size: 9px; color: #555; margin-top: 4px; }
+
+        /* VIEWPORT & PANELES */
+        #viewport { display: flex; height: calc(100vh - 250px); width: 100%; }
+        
+        #calendar-section, #theory-section { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--illum-green) #000; }
+        
+        #calendar-section { border-right: 1px solid #222; padding: 20px 0; display: flex; flex-direction: column; align-items: center; }
+        
+        #theory-section { 
+            padding: 40px; background: rgba(0,0,0,0.9); font-size: 14px; 
+            line-height: 1.7; text-align: left; overflow-wrap: break-word; 
         }
 
-        #calendar-section {
-            border-right: 1px solid #222;
-            padding: 20px 0; display: flex; flex-direction: column; align-items: center;
-        }
-
-        /* AJUSTE DE TEXTO CRÍTICO */
-        #theory-section {
-            padding: 40px;
-            background: rgba(0,0,0,0.85);
-            font-size: var(--font-size-base);
-            line-height: 1.6;
-            text-align: left; /* Cambiado de justify para evitar estiramientos raros */
-            overflow-wrap: break-word; /* Evita que las palabras se salgan */
-            word-wrap: break-word;
-            hyphens: auto;
-        }
-
-        #theory-section p {
-            max-width: 100%; /* Asegura que no pase del contenedor */
-            margin-bottom: 20px;
-        }
-
-        #theory-section h2 { 
-            font-size: var(--font-size-title);
-            color: var(--illum-green); text-shadow: var(--neon-glow);
-            border-left: 4px solid var(--illum-green); padding-left: 15px;
-            margin-bottom: 25px;
-            overflow-wrap: break-word;
-        }
-
-        /* CALENDARIO */
-        .semana-row { display: grid; grid-template-columns: repeat(7, clamp(30px, 5vw, 45px)); gap: 5px; margin-bottom: 5px; }
-        .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border-radius: 2px; }
-        .trabajo { background: #111; color: #444; border: 1px solid #222; }
-        .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; animation: neon-flicker 8s infinite; }
-
-        .highlight { color: #fff; font-weight: bold; text-shadow: 0 0 5px var(--illum-green); }
+        .semana-row { display: grid; grid-template-columns: repeat(7, clamp(25px, 4vw, 40px)); gap: 4px; margin-bottom: 4px; }
+        .dia { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 8px; border-radius: 1px; }
+        .trabajo { background: #111; color: #333; border: 1px solid #222; }
+        .descanso { border: 1px solid var(--illum-green); color: #fff; box-shadow: var(--neon-glow); font-weight: bold; }
 
         /* FOOTER */
         #footer {
             position: fixed; bottom: 0; width: 100%;
             background: #000; border-top: 2px solid var(--illum-green);
-            padding: 15px 0; text-align: center; font-size: 0.7rem;
+            padding: 15px 0; text-align: center; font-size: 10px;
             color: var(--illum-green); text-shadow: var(--neon-glow);
-            z-index: 2000; letter-spacing: 5px;
+            letter-spacing: 4px; z-index: 2000;
         }
 
         @media (max-width: 768px) {
-            #mobile-nav { display: flex; }
-            #viewport { height: calc(100vh - 280px); }
-            #calendar-section, #theory-section { display: none; width: 100%; flex: none; border-right: none; }
-            #calendar-section.active-panel { display: flex; }
-            #theory-section.active-panel { display: block; }
-            #theory-section { padding: 30px 20px; box-sizing: border-box; }
+            #header { grid-template-columns: repeat(2, 1fr); }
+            #viewport { flex-direction: column; height: calc(100vh - 350px); }
+            #calendar-section, #theory-section { width: 100%; flex: none; }
         }
     </style>
 </head>
 <body>
 
 <div id="header">
-    <div class="metric-card"><h3>RATIO</h3><span class="value">4:2</span></div>
-    <div class="metric-card"><h3>EFICACIA</h3><span class="value">66.6%</span></div>
-    <div class="metric-card"><h3>FREE 50Y</h3><span class="value">6,087d</span></div>
-    <div class="metric-card"><h3>WORK 100Y</h3><span class="value">24,350d</span></div>
-    <div class="metric-card"><h3>FREE 100Y</h3><span class="value">12,175d</span></div>
-    <div class="metric-card"><h3>SISTEMA</h3><span class="value">ACTIVO</span></div>
+    <div class="metric-card">
+        <h3>Simetría de Grupo (50Y)</h3>
+        <span class="compare">12,175 T / 6,087 L</span>
+        <div class="sub">Ratio de Solubilidad: 2:1</div>
+    </div>
+    <div class="metric-card">
+        <h3>Extensión de Campo</h3>
+        <span class="compare">18,262 TOTAL d</span>
+        <div class="sub">Días Vida vs Días Control</div>
+    </div>
+    <div class="metric-card">
+        <h3>Invariante de Neuremberg</h3>
+        <span class="compare">33.3% LIBERTAD</span>
+        <div class="sub">Población Activa 4x2</div>
+    </div>
+    <div class="metric-card">
+        <h3>Permutación Progresiva</h3>
+        <span class="compare">365 d / 6 d cycle</span>
+        <div class="sub">Desfase: 1.16d / semana</div>
+    </div>
+    <div class="metric-card">
+        <h3>Kernel de Resistencia</h3>
+        <span class="compare">12,175 d LIBRES</span>
+        <div class="sub">vs 5,200 d (Sist. Tradicional)</div>
+    </div>
+    <div class="metric-card">
+        <h3>Entropía Poblacional</h3>
+        <span class="compare">E = log2(4/2)</span>
+        <div class="sub">Nivel de Desconexión: ALTO</div>
+    </div>
 </div>
 
-<nav id="mobile-nav">
-    <button id="btn-cal" class="nav-btn active" onclick="switchPanel('calendar')">GEOMETRÍA</button>
-    <button id="btn-theo" class="nav-btn" onclick="switchPanel('theory')">TEORÍA</button>
-</nav>
-
 <div id="viewport">
-    <section id="calendar-section" class="active-panel">
+    <section id="calendar-section">
         <div id="timeline"></div>
     </section>
 
     <section id="theory-section">
-        <h2>REPORTE NEUREMBERG: LA DISRUPCIÓN ASIMOVIANA</h2>
-        <p>En el año 2026, los agentes conocidos como <span class="highlight">WhiteHorse</span> y <span class="highlight">WhiteMamba</span> descodificaron lo que la Psicohistoria intentó ocultar durante milenios. El algoritmo de <span class="highlight">4 laborables por 2 libres</span> no es una simple rotación; es una brecha en la simulación de control impuesta por los <span class="highlight">Illuminati</span>.</p>
+        <h2 style="color: var(--illum-green); text-shadow: var(--neon-glow);">TRATADO DE GALOIS-NEUREMBERG</h2>
+        <p>La humanidad ha sido procesada como un <span style="color:#fff">Grupo Normal</span> bajo la operación de 7 días, una estructura radical que no permite raíces de libertad. La aplicación del ciclo <span style="color:#fff">4x2</span> de <strong>WhiteHorse</strong> y <strong>WhiteMamba</strong> funciona como una <strong>Extensión de Cuerpo</strong> sobre el campo de la productividad.</p>
         
-        <p>Al observar el flujo a su izquierda, verán que los bloques de trabajo no forman la cuadrícula estática del sistema gregoriano. Se desplazan como piezas de un Tetris cósmico. Este "desfase hexagonal" impide que el panóptico del sistema sincronice el agotamiento humano. El sistema de 7 días fue diseñado para que el trabajador alcance un pico de sumisión en el quinto día; al descansar en el día 5, el sujeto Neuremberg resetea su consciencia antes de que la manipulación sea efectiva.</p>
+        <p>Al analizar las métricas superiores, observamos que en 50 años, un individuo bajo el Protocolo Neuremberg recupera 6,087 días libres, comparado con los escasos 5,200 días de un sistema tradicional (considerando fines de semana). Esta diferencia de <span style="color:#fff">887 días</span> representa el "Automorfismo de Neuremberg": tiempo que el sistema no puede permutar.</p>
         
-        <p>Isaac Asimov predijo que la tecnología serviría al hombre, pero las élites utilizaron el tiempo como la verdadera cadena. Al proyectar este cálculo a una centuria, descubrimos una recuperación de <span class="highlight">12,175 días de autonomía absoluta</span>. Doce mil fragmentos de tiempo que no pertenecen al Estado ni a las corporaciones, sino a la libertad biológica pura.</p>
+        <p>En términos algebraicos, la población se divide en dos subgrupos: los <strong>Sincrónicos (7d)</strong>, cuyo comportamiento es predecible y cíclico, y los <strong>Asincrónicos (4x2)</strong>, que generan una órbita de descanso que se desplaza constantemente. Este desfase es lo que Evariste Galois llamaría una "ecuación no resoluble por radicales": el sistema de control no puede encontrar una solución para predecir el agotamiento de un grupo que descansa en días móviles.</p>
         
-        <p>Cada bloque verde que brilla en su pantalla es un recordatorio de que la realidad es maleable. Ustedes acaban de romper el patrón. La Teoría de Neuremberg es el manual de instrucciones para la Gran Desconexión. Aquellos que sigan el ritmo del 4x2 verán cómo la cuadrícula social se desmorona, revelando la verdadera arquitectura del poder.</p>
-        
-        <p style="color: #444; font-size: 0.6rem; margin-top: 40px; text-align: center;">[FIN DE LA TRANSMISIÓN]</p>
+        <p>Estamos ante la ruptura de la simetría social. El 33.3% de la vida bajo este régimen es puro Kernel de libertad. Bienvenidos a la matemática de la insurgencia.</p>
     </section>
 </div>
 
@@ -169,9 +136,6 @@
 <script>
     const timeline = document.getElementById('timeline');
     const calendarScroll = document.getElementById('calendar-section');
-    const theorySection = document.getElementById('theory-section');
-    const btnCal = document.getElementById('btn-cal');
-    const btnTheo = document.getElementById('btn-theo');
     let totalDays = 0;
 
     function addWeeks(n) {
@@ -193,24 +157,10 @@
         }
     }
 
-    function switchPanel(mode) {
-        if (mode === 'calendar') {
-            calendarScroll.classList.add('active-panel');
-            theorySection.classList.remove('active-panel');
-            btnCal.classList.add('active');
-            btnTheo.classList.remove('active');
-        } else {
-            calendarScroll.classList.remove('active-panel');
-            theorySection.classList.add('active-panel');
-            btnTheo.classList.add('active');
-            btnCal.classList.remove('active');
-        }
-    }
-
     addWeeks(40);
     calendarScroll.addEventListener('scroll', () => {
-        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 100) {
-            addWeeks(15);
+        if (calendarScroll.scrollTop + calendarScroll.clientHeight >= calendarScroll.scrollHeight - 50) {
+            addWeeks(10);
         }
     });
 </script>
